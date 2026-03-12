@@ -14,6 +14,23 @@ const EMPTY_FORM = {
   description: '', tags: [],
 }
 
+function Field({ label, name, type = 'text', required, placeholder, children, form, set }) {
+  return (
+    <div className="field">
+      <label>{label}{required && ' *'}</label>
+      {children || (
+        <input
+          type={type}
+          value={form[name] ?? ''}
+          onChange={(e) => set(name, e.target.value)}
+          placeholder={placeholder}
+          required={required}
+        />
+      )}
+    </div>
+  )
+}
+
 export default function ItemForm({ initialData, onSave, onCancel, uid, locations = [] }) {
   const [form, setForm] = useState({ ...EMPTY_FORM, ...initialData })
   const [photos, setPhotos] = useState(initialData?.photos || [])
@@ -71,21 +88,6 @@ export default function ItemForm({ initialData, onSave, onCancel, uid, locations
     }
   }
 
-  const Field = ({ label, name, type = 'text', required, placeholder, children }) => (
-    <div className="field">
-      <label>{label}{required && ' *'}</label>
-      {children || (
-        <input
-          type={type}
-          value={form[name] ?? ''}
-          onChange={(e) => set(name, e.target.value)}
-          placeholder={placeholder}
-          required={required}
-        />
-      )}
-    </div>
-  )
-
   return (
     <form className={styles.form} onSubmit={handleSubmit} noValidate>
       {error && <div className="alert alert-error">{error}</div>}
@@ -93,7 +95,7 @@ export default function ItemForm({ initialData, onSave, onCancel, uid, locations
       {/* Basic Info */}
       <div className={styles.section}>
         <div className={styles.sectionTitle}>Basic Information</div>
-        <Field label="Item Name" name="name" required placeholder="e.g. iPhone 14 Pro" />
+        <Field form={form} set={set} label="Item Name" name="name" required placeholder="e.g. iPhone 14 Pro" />
         <div className={styles.grid2}>
           <div className="field">
             <label>Category *</label>
@@ -110,13 +112,13 @@ export default function ItemForm({ initialData, onSave, onCancel, uid, locations
           </div>
         </div>
         <div className={styles.grid2}>
-          <Field label="Brand" name="brand" placeholder="Apple, Samsung…" />
-          <Field label="Model" name="model" placeholder="Model number" />
+          <Field form={form} set={set} label="Brand" name="brand" placeholder="Apple, Samsung…" />
+          <Field form={form} set={set} label="Model" name="model" placeholder="Model number" />
         </div>
         <div className={styles.grid2}>
-          <Field label="Serial Number" name="serialNumber" placeholder="S/N" />
+          <Field form={form} set={set} label="Serial Number" name="serialNumber" placeholder="S/N" />
           <div className={styles.barcodeRow}>
-            <Field label="Barcode / UPC" name="barcode" placeholder="Scan or enter" />
+            <Field form={form} set={set} label="Barcode / UPC" name="barcode" placeholder="Scan or enter" />
             <button type="button" className={styles.scanBtn} onClick={() => setScannerOpen(true)}>
               📷 Scan
             </button>
@@ -128,7 +130,7 @@ export default function ItemForm({ initialData, onSave, onCancel, uid, locations
       <div className={styles.section}>
         <div className={styles.sectionTitle}>Quantity & Location</div>
         <div className={styles.grid3}>
-          <Field label="Quantity *" name="quantity" type="number" placeholder="1" />
+          <Field form={form} set={set} label="Quantity *" name="quantity" type="number" placeholder="1" />
           <div className="field">
             <label>Unit</label>
             <select value={form.unit} onChange={(e) => set('unit', e.target.value)}>
@@ -153,7 +155,7 @@ export default function ItemForm({ initialData, onSave, onCancel, uid, locations
               }
             </select>
           </div>
-          <Field label="Container / Shelf" name="container" placeholder="e.g. Top shelf" />
+          <Field form={form} set={set} label="Container / Shelf" name="container" placeholder="e.g. Top shelf" />
         </div>
       </div>
 
@@ -161,13 +163,13 @@ export default function ItemForm({ initialData, onSave, onCancel, uid, locations
       <div className={styles.section}>
         <div className={styles.sectionTitle}>Value & Purchase</div>
         <div className={styles.grid3}>
-          <Field label="Purchase Price ($)" name="purchasePrice" type="number" placeholder="0.00" />
-          <Field label="Current Value ($)" name="currentValue" type="number" placeholder="0.00" />
-          <Field label="Replacement Value ($)" name="replacementValue" type="number" placeholder="0.00" />
+          <Field form={form} set={set} label="Purchase Price ($)" name="purchasePrice" type="number" placeholder="0.00" />
+          <Field form={form} set={set} label="Current Value ($)" name="currentValue" type="number" placeholder="0.00" />
+          <Field form={form} set={set} label="Replacement Value ($)" name="replacementValue" type="number" placeholder="0.00" />
         </div>
         <div className={styles.grid2}>
-          <Field label="Purchase Date" name="purchaseDate" type="date" />
-          <Field label="Purchase Location" name="purchaseLocation" placeholder="e.g. Best Buy" />
+          <Field form={form} set={set} label="Purchase Date" name="purchaseDate" type="date" />
+          <Field form={form} set={set} label="Purchase Location" name="purchaseLocation" placeholder="e.g. Best Buy" />
         </div>
       </div>
 
@@ -175,9 +177,9 @@ export default function ItemForm({ initialData, onSave, onCancel, uid, locations
       <div className={styles.section}>
         <div className={styles.sectionTitle}>Important Dates</div>
         <div className={styles.grid3}>
-          <Field label="Warranty Expiry" name="warrantyExpiry" type="date" />
-          <Field label="Expiry Date (food)" name="expiryDate" type="date" />
-          <Field label="Last Service Date" name="serviceDate" type="date" />
+          <Field form={form} set={set} label="Warranty Expiry" name="warrantyExpiry" type="date" />
+          <Field form={form} set={set} label="Expiry Date (food)" name="expiryDate" type="date" />
+          <Field form={form} set={set} label="Last Service Date" name="serviceDate" type="date" />
         </div>
       </div>
 
