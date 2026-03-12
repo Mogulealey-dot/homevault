@@ -1,0 +1,8 @@
+.form { display: flex; flex-direction: column; gap: 16px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.actions { display: flex; justify-content: flex-end; gap: 10px; padding-top: 8px; border-top: 1px solid var(--border); }
+.directionRow { display: flex; gap: 10px; }
+.dirBtn { flex: 1; padding: 10px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--card); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s; font-family: inherit; color: var(--text); }
+.dirBtn:hover { border-color: var(--teal); }
+.dirBtn.active { border-color: var(--teal); background: rgba(13,148,136,0.08); color: var(--teal); font-weight: 600; }
+@media (max-width: 500px) { .grid2 { grid-template-columns: 1fr; } }

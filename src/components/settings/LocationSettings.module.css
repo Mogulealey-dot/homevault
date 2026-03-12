@@ -1,0 +1,26 @@
+.root {}
+.list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--card);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  transition: all 0.15s;
+}
+.item:hover { box-shadow: var(--shadow); }
+.icon { font-size: 20px; }
+.name { flex: 1; font-size: 14px; font-weight: 600; color: var(--text); }
+.count { font-size: 12px; color: var(--muted); background: var(--bg); padding: 2px 8px; border-radius: 10px; }
+.actions { display: flex; gap: 4px; }
+.orderBtns { display: flex; flex-direction: column; gap: 2px; }
+.orderBtn { width: 22px; height: 18px; border: 1px solid var(--border); border-radius: 3px; background: none; cursor: pointer; font-size: 10px; display: flex; align-items: center; justify-content: center; color: var(--muted); }
+.orderBtn:hover { background: var(--bg); }
+.addForm { padding: 16px; background: var(--bg); border-radius: 10px; border: 1px solid var(--border); }
+.addTitle { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--text); }
+.addGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.addInput { padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; color: var(--text); background: var(--card); }
+.addInput:focus { border-color: var(--teal); }
+.addActions { display: flex; gap: 8px; }

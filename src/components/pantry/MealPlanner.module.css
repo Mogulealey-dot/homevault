@@ -1,0 +1,99 @@
+.root {}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.dayCol {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 120px;
+}
+
+.dayHeader {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+}
+
+.dayHeader.today {
+  color: var(--teal);
+  border-bottom-color: var(--teal);
+}
+
+.mealSlot {
+  padding: 8px 10px;
+  background: var(--bg);
+  border: 1.5px dashed var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  min-height: 60px;
+}
+
+.mealSlot:hover {
+  border-color: var(--teal);
+  background: rgba(13,148,136,0.04);
+}
+
+.mealSlot.filled {
+  background: var(--card);
+  border-style: solid;
+  border-color: var(--border);
+}
+
+.mealType {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.mealText {
+  font-size: 12px;
+  color: var(--text);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.mealEmpty {
+  font-size: 11px;
+  color: #cbd5e1;
+}
+
+.mealInput {
+  width: 100%;
+  font-size: 12px;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  color: var(--text);
+  resize: none;
+  height: 40px;
+  padding: 0;
+}

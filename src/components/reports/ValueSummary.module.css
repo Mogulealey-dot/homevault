@@ -1,0 +1,107 @@
+.root { display: flex; flex-direction: column; gap: 24px; }
+
+.totalCard {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+  border-radius: 14px;
+  padding: 28px;
+  color: white;
+  text-align: center;
+}
+
+.totalLabel { font-size: 14px; opacity: 0.75; margin-bottom: 6px; }
+.totalValue { font-size: 42px; font-weight: 800; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+.sectionCard {
+  background: var(--card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 20px;
+}
+
+.sectionTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.barRow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bar {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.barHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.barLabel { font-size: 12px; color: var(--text); font-weight: 500; }
+.barValue { font-size: 12px; font-weight: 600; color: var(--text); }
+
+.barTrack {
+  height: 6px;
+  background: var(--bg);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+.topList { display: flex; flex-direction: column; gap: 8px; }
+
+.topItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg);
+  border-radius: 8px;
+}
+
+.rank {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.topName { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); }
+.topValue { font-size: 13px; font-weight: 700; color: var(--teal); }
+
+.conditionRow { display: flex; flex-direction: column; gap: 8px; }
+
+.conditionItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.conditionLabel { width: 80px; color: var(--muted); }
+.conditionTrack { flex: 1; height: 8px; background: var(--bg); border-radius: 4px; overflow: hidden; }
+.conditionFill { height: 100%; border-radius: 4px; background: var(--teal); }
+.conditionCount { width: 30px; text-align: right; font-weight: 600; color: var(--text); }
+
+@media (max-width: 768px) {
+  .grid2 { grid-template-columns: 1fr; }
+}
