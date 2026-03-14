@@ -1,13 +1,16 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { CATEGORIES } from '../../config/categories'
 import styles from './SearchFilter.module.css'
 
 export default function SearchFilter({ onSearch, onFilter, locations = [], activeFilters = {} }) {
   const [search, setSearch] = useState('')
+  const searchTimerRef = useRef(null)
 
   const handleSearch = (val) => {
     setSearch(val)
-    onSearch?.(val)
+    // Debounce the upstream filter callback — avoids re-filtering on every keystroke
+    if (searchTimerRef.current) clearTimeout(searchTimerRef.current)
+    searchTimerRef.current = setTimeout(() => onSearch?.(val), 300)
   }
 
   const handleFilter = (key, value) => {
