@@ -19,13 +19,14 @@ export function useAlerts({ items = [], maintenance = [], loans = [] }) {
           result.push({
             id: `expiry-${item.id}`,
             type: 'expiry',
-            severity: days <= 0 ? 'danger' : days <= 3 ? 'danger' : 'warning',
+            // days < 0 = already expired (danger), 0 = today (danger), 1-3 = very soon (warning), 4+ = upcoming (info)
+            severity: days < 0 ? 'danger' : days === 0 ? 'danger' : days <= 3 ? 'warning' : 'info',
             title: days <= 0 ? `${item.name} has expired` : `${item.name} expiring soon`,
             description:
-              days <= 0
-                ? `Expired ${Math.abs(days)} day${Math.abs(days) !== 1 ? 's' : ''} ago`
-                : days === 0
+              days === 0
                 ? 'Expires today'
+                : days < 0
+                ? `Expired ${Math.abs(days)} day${Math.abs(days) !== 1 ? 's' : ''} ago`
                 : `Expires in ${days} day${days !== 1 ? 's' : ''}`,
             itemId: item.id,
             actionLabel: 'View Item',
