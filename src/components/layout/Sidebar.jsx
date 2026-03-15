@@ -9,6 +9,10 @@ const NAV_ITEMS = [
   { id: 'maintenance', label: 'Maintenance', icon: '🔧' },
   { id: 'loans', label: 'Loans', icon: '🤝' },
   { id: 'reports', label: 'Reports', icon: '📋' },
+  { id: 'warranties', label: 'Warranties', icon: '🛡️' },
+  { id: 'projects', label: 'Projects', icon: '🏗️' },
+  { id: 'utilities', label: 'Utilities', icon: '⚡' },
+  { id: 'contractors', label: 'Contractors', icon: '👷' },
 ]
 
 export default function Sidebar({ activePage, onNavigate, alertsByPage = {}, user, mobileOpen, onClose }) {
