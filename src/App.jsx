@@ -3,6 +3,8 @@ import Layout from './components/layout/Layout'
 import { useInventory } from './hooks/useInventory'
 import { useFirestore } from './hooks/useFirestore'
 import { useAlerts } from './hooks/useAlerts'
+import { useToast } from './hooks/useToast'
+import Toast from './components/common/Toast'
 import DashboardPage from './pages/DashboardPage'
 import InventoryPage from './pages/InventoryPage'
 import PantryPage from './pages/PantryPage'
@@ -45,6 +47,9 @@ export default function App({ user }) {
   const stats = useMemo(() => getStats(), [getStats])
   const { alerts, alertsByPage } = useAlerts({ items, maintenance, loans })
 
+  // Toast system
+  const { toasts, show: showToast, remove: removeToast } = useToast()
+
   // Push notification checks on mount / when data loads
   useEffect(() => {
     if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return
@@ -79,6 +84,7 @@ export default function App({ user }) {
   const handleQuickAdd = async (data) => {
     await addItem(data)
     await logActivity({ action: 'add', description: `Quick added: ${data.name}`, itemName: data.name })
+    showToast(`"${data.name}" added to inventory`)
   }
 
   const renderPage = () => {
@@ -94,27 +100,27 @@ export default function App({ user }) {
           />
         )
       case 'inventory':
-        return <InventoryPage user={user} />
+        return <InventoryPage user={user} showToast={showToast} />
       case 'pantry':
-        return <PantryPage user={user} />
+        return <PantryPage user={user} showToast={showToast} />
       case 'shopping':
-        return <ShoppingPage user={user} />
+        return <ShoppingPage user={user} showToast={showToast} />
       case 'maintenance':
-        return <MaintenancePage user={user} />
+        return <MaintenancePage user={user} showToast={showToast} />
       case 'loans':
-        return <LoansPage user={user} />
+        return <LoansPage user={user} showToast={showToast} />
       case 'reports':
         return <ReportsPage user={user} />
       case 'settings':
-        return <SettingsPage user={user} />
+        return <SettingsPage user={user} showToast={showToast} />
       case 'warranties':
-        return <WarrantiesPage user={user} />
+        return <WarrantiesPage user={user} showToast={showToast} />
       case 'projects':
-        return <ProjectsPage user={user} />
+        return <ProjectsPage user={user} showToast={showToast} />
       case 'utilities':
-        return <UtilitiesPage user={user} />
+        return <UtilitiesPage user={user} showToast={showToast} />
       case 'contractors':
-        return <ContractorsPage user={user} />
+        return <ContractorsPage user={user} showToast={showToast} />
       default:
         return <DashboardPage user={user} stats={stats} alerts={alerts} onNavigate={setActivePage} onQuickAdd={handleQuickAdd} />
     }
@@ -129,6 +135,7 @@ export default function App({ user }) {
       user={user}
     >
       {renderPage()}
+      <Toast toasts={toasts} onRemove={removeToast} />
     </Layout>
   )
 }

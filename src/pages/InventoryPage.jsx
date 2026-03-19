@@ -268,7 +268,7 @@ function ReceiptScanModal({ isOpen, onClose, onAddItem }) {
 }
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
-export default function InventoryPage({ user }) {
+export default function InventoryPage({ user, showToast }) {
   const uid = user?.uid
   const { items, loading, add, update, remove, getStats, searchItems } = useInventory(uid)
   const { data: locations, add: addLocation, remove: removeLocation, update: updateLocations } = useFirestore(uid, 'locations')
@@ -319,6 +319,7 @@ export default function InventoryPage({ user }) {
   const handleAdd = async (data) => {
     const id = await add(data)
     await logActivity({ action: 'add', description: `Added: ${data.name}`, itemName: data.name })
+    showToast?.(`"${data.name}" added to inventory`)
     setShowAddForm(false)
     return id
   }
@@ -326,12 +327,15 @@ export default function InventoryPage({ user }) {
   const handleUpdate = async (id, data) => {
     await update(id, data)
     await logActivity({ action: 'update', description: `Updated: ${data.name || ''}`, itemName: data.name })
+    showToast?.(`"${data.name}" updated`)
     setViewItem(null)
   }
 
   const handleDelete = async (item) => {
+    const name = deleteTarget?.name || item?.name
     await remove(deleteTarget?.id || item?.id)
-    await logActivity({ action: 'delete', description: `Deleted: ${deleteTarget?.name || item?.name}` })
+    await logActivity({ action: 'delete', description: `Deleted: ${name}` })
+    showToast?.(`"${name}" deleted`, 'error')
     setDeleteTarget(null)
     setViewItem(null)
   }
@@ -339,6 +343,7 @@ export default function InventoryPage({ user }) {
   const handleLend = async (data) => {
     await addLoan(data)
     await logActivity({ action: 'loan', description: `Lent: ${data.itemName} to ${data.personName}` })
+    showToast?.(`"${data.itemName}" marked as lent`)
     setLoanItem(null)
   }
 

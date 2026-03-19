@@ -7,10 +7,12 @@ export default function AuthScreen() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [resetEmail, setResetEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [successMsg, setSuccessMsg] = useState('')
 
-  const { signIn, signUp, signInWithGoogle } = useAuth()
+  const { signIn, signUp, signInWithGoogle, resetPassword } = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -55,6 +57,98 @@ export default function AuthScreen() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleReset = async (e) => {
+    e.preventDefault()
+    setError('')
+    setSuccessMsg('')
+    const trimmed = resetEmail.trim()
+    if (!trimmed) {
+      setError('Please enter your email address.')
+      return
+    }
+    setLoading(true)
+    try {
+      await resetPassword(trimmed)
+      setSuccessMsg('Reset link sent! Check your inbox.')
+      setResetEmail('')
+    } catch (err) {
+      const messages = {
+        'auth/user-not-found': 'No account found with this email.',
+        'auth/invalid-email': 'Please enter a valid email address.',
+        'auth/too-many-requests': 'Too many attempts. Please try again later.',
+      }
+      setError(messages[err.code] || err.message || 'Something went wrong.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const goToReset = () => {
+    setMode('reset')
+    setError('')
+    setSuccessMsg('')
+    setResetEmail(email)
+  }
+
+  const goToLogin = () => {
+    setMode('login')
+    setError('')
+    setSuccessMsg('')
+  }
+
+  if (mode === 'reset') {
+    return (
+      <div className={styles.root}>
+        <div className={styles.card}>
+          <div className={styles.logoArea}>
+            <span className={styles.logoIcon}>🏠</span>
+            <div className={styles.logoTitle}>HomeVault</div>
+            <div className={styles.tagline}>Your complete home inventory, organized.</div>
+          </div>
+
+          <div className={styles.modeTitle}>Reset your password</div>
+
+          {error && <div className={styles.error}>{error}</div>}
+          {successMsg && <div className={styles.successMsg}>{successMsg}</div>}
+
+          <form className={styles.form} onSubmit={handleReset}>
+            <div className={styles.fieldGroup}>
+              <label className={styles.label}>Email Address</label>
+              <input
+                className={styles.input}
+                type="email"
+                placeholder="you@example.com"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+                required
+                autoFocus
+              />
+            </div>
+
+            <button className={styles.submitBtn} type="submit" disabled={loading}>
+              {loading ? (
+                <>
+                  <span style={{ display: 'inline-block', width: 16, height: 16, border: '2px solid rgba(255,255,255,0.4)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+                  Sending…
+                </>
+              ) : (
+                'Send Reset Link'
+              )}
+            </button>
+          </form>
+
+          <div className={styles.toggleText}>
+            <button className={styles.backLink} onClick={goToLogin}>
+              ← Back to sign in
+            </button>
+          </div>
+        </div>
+
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    )
   }
 
   return (
@@ -112,6 +206,13 @@ export default function AuthScreen() {
               required
               minLength={6}
             />
+            {mode === 'login' && (
+              <div className={styles.forgotRow}>
+                <button type="button" className={styles.forgotLink} onClick={goToReset}>
+                  Forgot password?
+                </button>
+              </div>
+            )}
           </div>
 
           <button className={styles.submitBtn} type="submit" disabled={loading}>

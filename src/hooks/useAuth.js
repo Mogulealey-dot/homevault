@@ -7,6 +7,7 @@ import {
   updateProfile as firebaseUpdateProfile,
   GoogleAuthProvider,
   signInWithPopup,
+  sendPasswordResetEmail,
 } from 'firebase/auth'
 import { auth } from '../firebase'
 
@@ -48,5 +49,9 @@ export function useAuth() {
     return firebaseUpdateProfile(auth.currentUser, updates)
   }
 
-  return { user, loading, signIn, signUp, signOut, signInWithGoogle, updateProfile }
+  const resetPassword = async (email) => {
+    return sendPasswordResetEmail(auth, email)
+  }
+
+  return { user, loading, signIn, signUp, signOut, signInWithGoogle, updateProfile, resetPassword }
 }
